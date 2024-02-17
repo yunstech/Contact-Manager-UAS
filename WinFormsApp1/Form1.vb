@@ -5,13 +5,9 @@ Public Class Form1
     Private contacts As New List(Of String)
     Private filePath As String = ""
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' No need to load contacts here
-    End Sub
-
     Private Sub LoadContactsFromFile(filePath As String)
         If File.Exists(filePath) Then
-            contacts.Clear() ' Clear existing contacts before loading from file
+            contacts.Clear()
             Using reader As New StreamReader(filePath)
                 Dim line As String
                 Do
@@ -21,12 +17,12 @@ Public Class Form1
                     End If
                 Loop Until line Is Nothing
             End Using
-            DisplayContacts() ' Automatically display contacts after loading from file
+            DisplayContacts()
         End If
     End Sub
 
     Private Sub DisplayContacts()
-        ListBox1.Items.Clear() ' Clear ListBox before displaying contacts
+        ListBox1.Items.Clear()
         If contacts.Count > 0 Then
             For Each contact As String In contacts
                 ListBox1.Items.Add(contact)
@@ -46,18 +42,17 @@ Public Class Form1
 
     Private Sub AddContact(contactName As String, phoneNumber As String)
         contacts.Add($"{contactName} - {phoneNumber}")
-        DisplayContacts() ' Automatically display contacts after adding a contact
+        DisplayContacts()
     End Sub
 
     Private Sub RemoveContact(contactName As String)
-        ' Search for the contact with the given name
         For Each contact As String In contacts
             If contact.StartsWith(contactName & " - ") Then
                 contacts.Remove(contact)
-                Exit For ' Exit loop after removing the contact
+                Exit For
             End If
         Next
-        DisplayContacts() ' Automatically display contacts after removing a contact
+        DisplayContacts()
     End Sub
 
     Private Sub btn_display_Click(sender As Object, e As EventArgs) Handles btn_display.Click
@@ -94,10 +89,8 @@ Public Class Form1
         openFileDialog1.RestoreDirectory = True
 
         If openFileDialog1.ShowDialog = DialogResult.OK Then
-            ' Display the selected file path
             filePath = openFileDialog1.FileName
             txtFilePath.Text = filePath
-            ' Load contacts from the selected file
             LoadContactsFromFile(filePath)
         End If
     End Sub
